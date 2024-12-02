@@ -1,0 +1,40 @@
+// File: android/build.gradle
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Thay đổi phiên bản plugin Gradle phù hợp với Gradle Wrapper
+        classpath 'com.android.tools.build:gradle:8.2.0'
+        // Nếu sử dụng Flutter Fire, Firebase cần classpath dưới
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        // Nếu cần các dependency cũ, thêm jcenter()
+        // jcenter() // Không khuyến nghị nhưng vẫn khả dụng cho một số package
+    }
+}
+
+// Định nghĩa lại thư mục build chính
+rootProject.buildDir = "${rootDir}/build"
+
+// Cấu hình subproject cho thư mục build
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Định nghĩa task "clean" để xóa toàn bộ build
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
